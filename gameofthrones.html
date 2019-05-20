@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="characters"></div>
+  <div id="houses"></div>
+  <div id="houseinfo"></div>
+
+
+
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+  <script>
+    $(function () {
+      let url = "https://www.anapioficeandfire.com/api/characters?page=1&pageSize=50"
+
+
+      $.get(url)
+        .done((response) => {
+          for (let i = 0; i < response.length; i++) {
+            let houseURL = response[i].allegiances[0]
+            $.get(houseURL)
+              .done((e) => {
+                if (e.name !== undefined && response[i].name !== "") {
+                  console.log(`${response[i].name} lives in ${e.name}'s house`)
+                  $('#characters').append(`<p>${response[i].name} lives in ${e.name}'s house</p>`)
+                } else if (response[i].name !== "") {
+                  console.log(`${response[i].name} does not have a house`)
+                  $('#characters').append(`<p>${response[i].name} doesn't live in a house!</p>`)
+                } else {
+
+                }
+              })
+          }
+        })
+
+      let houses = "https://www.anapioficeandfire.com/api/houses?page=1&pageSize=50"
+
+      $.get(houses)
+        .done((response) => {
+          for (let i = 0; i < response.length; i++) {
+            $('#houses').append(`<button>${response[i].name}</button>`)
+
+          }
+          $('button').attr('id', function (index) {
+            return index;
+          })
+
+          $('#houses').on('click', function (event) {
+            console.log(response[event.target.id])
+            $('#houseinfo').html(`<p>url: ${response[event.target.id].url}
+            name: ${response[event.target.id].name}
+            region: ${response[event.target.id].region}
+            coat of arms: ${response[event.target.id].coatOfArms}</p`)
+          })
+        })
+
+
+
+    })
+  </script>
+</body>
+
+</html>
