@@ -23,7 +23,7 @@
     $(function () {
       let url = "https://www.anapioficeandfire.com/api/characters?page=1&pageSize=50"
 
-
+      //this get statement is pulling the characters and then the second get is pulling the houses, and we are combining this information and putting it in our div
       $.get(url)
         .done((response) => {
           for (let i = 0; i < response.length; i++) {
@@ -45,6 +45,8 @@
 
       let houses = "https://www.anapioficeandfire.com/api/houses?page=1&pageSize=50"
 
+
+      //this is for our buttons, we are going through our houses and getting their information, we are first making buttons, then we are assigning ids to our buttons so we can pull that specific house from our api, and finally we are using our on click event to show the info in that house from our api call
       $.get(houses)
         .done((response) => {
           for (let i = 0; i < response.length; i++) {
