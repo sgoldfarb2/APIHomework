@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #map {
+      height: 400px;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div id="map"></div>
+
+
+
+  <script>
+    function initMap() {
+      var options = {
+        center: { lat: 29.7604, lng: -95.3698 },
+        zoom: 8
+      }
+      var map = new google.maps.Map(document.getElementById('map'), options)
+
+      //add a marker
+      // var marker = new google.maps.Marker({
+      //   position: { lat: 29.7604, lng: -95.3698 },
+      //   map: map
+      // })
+
+      //add multiple markers that our user inputs
+      function addMarker(props) {
+        var marker = new google.maps.Marker({
+          position: props.coords,
+          map: map
+          // icon: props.image
+        })
+
+
+
+        //our infoWindow
+        if (props.infoWindow) {
+          var infoWindow = new google.maps.InfoWindow({
+            content: props.infoWindow
+          })
+          marker.addListener('click', () => {
+
+            infoWindow.open(map, marker)
+
+          })
+        }
+
+        if (props.image) {
+          marker.setIcon(props.image)
+        }
+
+      }//end of add marker function
+
+
+      addMarker({ coords: { lat: 29.7604, lng: -95.3698 }, image: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png", infoWindow: 'Houston, Texas' })
+      // addMarker({ coords: { lat: 29.7604, lng: -95.3698 } })
+
+
+      //info window
+      //   var infoWindow = new google.maps.InfoWindow({
+      //     content: '<h1>Houston, Texas</h1>'
+      //   })
+      //   marker.addListener('click', () => {
+      //     infoWindow.open(map, marker)
+      //   })
+
+
+
+      //add marker when user clicks
+      google.maps.event.addListener(map, 'click', (event) => {
+        addMarker({ coords: event.latLng })
+      })
+
+
+    }//end of our init map function
+
+
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTLHA4kWqkubsSo6VGTsiWl_lhhs9TNAQ&callback=initMap"
+    async defer></script>
+</body>
+
+</html>
